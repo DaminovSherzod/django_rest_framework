@@ -26,4 +26,10 @@ def Get_Task(request: Request, id):
         return Response(serializers.data)
     except Task.DoesNotExist:
         return Response({'result':'Task not found'})
-    
+
+
+@api_view(['Get'])
+def Get_All_Task(request: Request):
+    tasks = Task.objects.all()
+    serializers = TaskSerializers(tasks, many=True)
+    return Response(serializers.data)
