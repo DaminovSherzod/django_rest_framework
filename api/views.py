@@ -28,8 +28,14 @@ def Get_Task(request: Request, id):
         return Response({'result':'Task not found'})
 
 
-@api_view(['Get'])
+@api_view(['GET'])
 def Get_All_Task(request: Request):
     tasks = Task.objects.all()
     serializers = TaskSerializers(tasks, many=True)
     return Response(serializers.data)
+
+@api_view(['GET'])
+def Remove_Task(request: Request, id):
+    tasks = Task.objects.get(id=id)
+    tasks.delete()
+    return Response({'result':'The task has been deleted'})
