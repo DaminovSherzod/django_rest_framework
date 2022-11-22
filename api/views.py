@@ -16,3 +16,14 @@ def CreateTask(request: Request):
         return Response(serializers.data)
     else:
         return Response(serializers.errors)
+
+
+@api_view(['GET'])
+def Get_Task(request: Request, id):
+    try:
+        tasks = Task.objects.get(id=id)
+        serializers = TaskSerializers(tasks)
+        return Response(serializers.data)
+    except Task.DoesNotExist:
+        return Response({'result':'Task not found'})
+    
