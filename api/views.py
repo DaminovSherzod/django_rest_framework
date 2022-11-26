@@ -39,3 +39,17 @@ def Remove_Task(request: Request, id):
     tasks = Task.objects.get(id=id)
     tasks.delete()
     return Response({'result':'The task has been deleted'})
+
+@api_view(['POST'])
+def Update_Task(request: Request, id):
+    try:
+        data = request.data
+        task = Task.objects.get(id=id)
+        serializer = TaskSerializers(task, data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
+    except Task.DoesNotExist:
+        return Response({'result':'Task not found'})
